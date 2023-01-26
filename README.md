@@ -1,4 +1,4 @@
-# Wolfia-GitHub-Action v1
+# Wolfia-Deploy v1
 
 This action allows you to upload a binary to [Wolfia](https://wolfia.com) for automating the distribution of your app.
 
@@ -22,7 +22,7 @@ Here's an [example configuration](.github/workflows/build.yml).
 
 ```yaml
 steps:
-- uses: wolfia-app/wolfia-github-action@v1.1.0
+- uses: wolfia-app/wolfia-github-action@v0.0.1
   with:
     github-token: ${{ secrets.GITHUB_TOKEN }}
     wolfia-api-key-id: ${{ vars.WOLFIA_API_KEY_ID }}

@@ -1,12 +1,13 @@
-name: 'build'
+name: 'Test github action'
 on:
-  pull_request:
   push:
     branches:
-      - 'releases/*'
+      - '**'
+
+  workflow_dispatch:
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     environment: nightly
     steps:
@@ -15,7 +16,7 @@ jobs:
         run: |
           npm ci
           npm run all
-      - name: Generate Wolfia github action
+      - name: Generate Wolfia github action and upload app
         uses: ./
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
