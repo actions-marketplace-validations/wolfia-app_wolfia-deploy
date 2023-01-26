@@ -1,5 +1,5 @@
 name: 'Wolfia deploy'
-description: 'Upload your app to automating your mobile app releases on [Wolfia](https://wolfia.com)'
+description: 'Upload your app to automate your mobile app releases on [Wolfia](https://wolfia.com)'
 author: 'Wolfia'
 branding:
   icon: 'smartphone'
