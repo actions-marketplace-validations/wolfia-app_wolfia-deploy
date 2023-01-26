@@ -18,7 +18,7 @@ inputs:
     description: 'The binary file path to upload to wolfia'
     required: true
   track-id:
-    description: 'The track id to related to the app. You can find the track id in [Wolfia](https://wolfia.com/apps).'
+    description: 'The track ID of the app you want to release. You can find the track ID in [Wolfia](https://wolfia.com/apps).'
     required: true
 runs:
   using: 'node16'
