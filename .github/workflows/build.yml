@@ -14,11 +14,11 @@ jobs:
         run: |
           npm ci --ignore-scripts --legacy-peer-deps
           npm run all
-      - name: Generate wolfia github action
+      - name: Generate Wolfia github action
         uses: ./
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           wolfia-api-key-id: ${{ secrets.WOLFIA_API_KEY_ID }}
           wolfia-api-key-secret: ${{ secrets.WOLFIA_API_KEY_SECRET }}
+          track-id: ${{ vars.TRACK_ID }}
           app-path: data/hacker.apk
-          link-description: Test description
