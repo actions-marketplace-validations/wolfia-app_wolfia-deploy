@@ -1,38 +1,15 @@
 import * as core from '@actions/core'
-import * as octokit from './octokit'
-import {generateMagicLink} from './wolfia'
+import {uploadAppToWolfia} from './wolfia'
 import * as github from '@actions/github'
-
-const context = github.context
 
 async function runWolfiaAction(): Promise<void> {
   try {
-    const shouldCommentOnPR = core.getBooleanInput('comment-on-pr')
-
-    if (shouldCommentOnPR && !context.payload.pull_request) {
-      core.setFailed(
-        'Set comment-on-pr to false, if you want to enable wolfia github action for other workflows other than pull_request'
-      )
-      return
-    }
-
-    const linkDescription = core.getInput('link-description')
+    const trackId = core.getInput('track-id')
     const binaryPath = core.getInput('app-path')
+    const gitSha = github.context.sha
+    const uploadResult = await uploadAppToWolfia(trackId, gitSha, binaryPath)
 
-    const pullRequestInfo = await octokit.getPullRequestInfo()
-    const magicLink = await generateMagicLink(
-      linkDescription,
-      binaryPath,
-      JSON.stringify(pullRequestInfo)
-    )
-
-    core.info(`Wolfia magic link: ${magicLink.data.link}`)
-
-    if (shouldCommentOnPR) {
-      await octokit.createComment(
-        `Try out the app with [Wolfia Magic Link](${magicLink.data.link}) ✨🔮`
-      )
-    }
+    core.info(`Wolfia upload result: ${uploadResult}`)
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message)
   }

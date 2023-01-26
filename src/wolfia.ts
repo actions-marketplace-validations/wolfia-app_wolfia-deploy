@@ -1,14 +1,15 @@
 import * as core from '@actions/core'
 import * as fs from 'fs'
 import FormData from 'form-data'
-import axios, {AxiosResponse} from 'axios'
 import path from 'path'
+import type {AxiosResponse} from 'axios'
+import axios from 'axios'
 
-export async function generateMagicLink(
+export async function uploadAppToWolfia(
   linkDescription: string,
   binaryPath: string,
   additionalInfo: string
-): Promise<AxiosResponse<MagicLink>> {
+): Promise<AxiosResponse<string>> {
   const apiKeyId = core.getInput('wolfia-api-key-id')
   const apiKeySecret = core.getInput('wolfia-api-key-secret')
 
@@ -18,21 +19,14 @@ export async function generateMagicLink(
     fs.readFileSync(binaryPath),
     path.parse(binaryPath).base
   )
-  formData.append('linkdescription', linkDescription)
-  formData.append('linkadditionalinfo', additionalInfo)
+  formData.append('trackId', linkDescription)
+  formData.append('gitSha', additionalInfo)
 
-  return axios.post<MagicLink>('https://api.wolfia.com/magic-links', formData, {
+  return axios.post('https://api.wolfia.com/upload/android', formData, {
     headers: {
       'Content-Type': `multipart/form-data; boundary=${formData.getBoundary()}`,
       'X-Api-Key-Id': apiKeyId,
       'X-Api-Key-Secret': apiKeySecret
     }
   })
-}
-
-export interface MagicLink {
-  link: string
-  linkCreatedBy: string
-  linkTitle: string
-  linkDescription: string
 }
