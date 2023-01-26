@@ -8,6 +8,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment: nightly
     steps:
       - uses: actions/checkout@v3
       - name: Compile and build github action
@@ -18,7 +19,7 @@ jobs:
         uses: ./
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          wolfia-api-key-id: ${{ secrets.WOLFIA_API_KEY_ID }}
+          wolfia-api-key-id: ${{ vars.WOLFIA_API_KEY_ID }}
           wolfia-api-key-secret: ${{ secrets.WOLFIA_API_KEY_SECRET }}
           track-id: ${{ vars.TRACK_ID }}
           app-path: data/hacker.apk
