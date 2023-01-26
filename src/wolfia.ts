@@ -1,38 +1,40 @@
 import * as core from '@actions/core'
 import * as fs from 'fs'
 import FormData from 'form-data'
-import axios, {AxiosResponse} from 'axios'
 import path from 'path'
+import type {AxiosResponse} from 'axios'
+import axios from 'axios'
+import * as github from '@actions/github'
 
-export async function generateMagicLink(
-  linkDescription: string,
-  binaryPath: string,
-  additionalInfo: string,
-): Promise<AxiosResponse<MagicLink>> {
+export async function uploadAppToWolfia(): Promise<AxiosResponse<string>> {
   const apiKeyId = core.getInput('wolfia-api-key-id')
   const apiKeySecret = core.getInput('wolfia-api-key-secret')
+  const trackId = core.getInput('track-id')
+  const binaryPath = core.getInput('app-path')
+  const gitSha = github.context.sha
 
+  if (!fs.existsSync(binaryPath)) {
+    throw new Error(`App not found at ${binaryPath}`)
+  }
+  if (!binaryPath.endsWith('.apk') && !binaryPath.endsWith('.aab')) {
+    throw new Error(
+      `App must be an apk or aab file. ipa files are not supported at this time. Path: ${binaryPath}`
+    )
+  }
   const formData = new FormData()
   formData.append(
     'binary',
     fs.readFileSync(binaryPath),
     path.parse(binaryPath).base
   )
-  formData.append('linkdescription', linkDescription)
-  formData.append('linkadditionalinfo', additionalInfo)
+  formData.append('trackId', trackId)
+  formData.append('gitSha', gitSha)
 
-  return axios.post<MagicLink>('https://api.wolfia.com/magic-links', formData, {
+  return axios.post('https://api.wolfia.com/upload/android', formData, {
     headers: {
       'Content-Type': `multipart/form-data; boundary=${formData.getBoundary()}`,
       'X-Api-Key-Id': apiKeyId,
       'X-Api-Key-Secret': apiKeySecret
     }
   })
-}
-
-export interface MagicLink {
-  link: string
-  linkCreatedBy: string
-  linkTitle: string
-  linkDescription: string
 }

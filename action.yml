@@ -1,5 +1,5 @@
-name: 'Wolfia magic link'
-description: 'Generate a wolfia magic link and create a comment on the PR with a magic link'
+name: 'Wolfia deploy'
+description: 'Upload your app to automate your mobile app releases on [Wolfia](https://wolfia.com)'
 author: 'Wolfia'
 branding:
   icon: 'smartphone'
@@ -17,12 +17,9 @@ inputs:
   app-path:
     description: 'The binary file path to upload to wolfia'
     required: true
-  link-description:
-    description: 'Description for the magic link'
-    default: ""
-  comment-on-pr:
-    description: 'Whether to comment the generated magic link on PR'
-    default: true
+  track-id:
+    description: 'The track ID of the app you want to release. You can find the track ID in [Wolfia](https://wolfia.com/apps).'
+    required: true
 runs:
   using: 'node16'
   main: 'dist/index.js'

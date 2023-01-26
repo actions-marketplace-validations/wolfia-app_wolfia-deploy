@@ -1,24 +1,26 @@
-name: 'build'
+name: 'Test github action'
 on:
-  pull_request:
   push:
     branches:
-      - 'releases/*'
+      - '**'
+
+  workflow_dispatch:
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
+    environment: nightly
     steps:
       - uses: actions/checkout@v3
       - name: Compile and build github action
         run: |
-          npm ci --ignore-scripts --legacy-peer-deps
+          npm ci
           npm run all
-      - name: Generate wolfia github action
+      - name: Generate Wolfia github action and upload app
         uses: ./
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          wolfia-api-key-id: ${{ secrets.WOLFIA_API_KEY_ID }}
+          wolfia-api-key-id: ${{ vars.WOLFIA_API_KEY_ID }}
           wolfia-api-key-secret: ${{ secrets.WOLFIA_API_KEY_SECRET }}
+          track-id: ${{ vars.TRACK_ID }}
           app-path: data/hacker.apk
-          link-description: Test description
