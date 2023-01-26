@@ -19,7 +19,7 @@ export async function getPullRequestInfo() {
     owner: context.repo.owner,
     repo: context.repo.repo,
     pull_number: context.payload.pull_request!.number
-  });
+  })
   return {
     latestSha: pullRequest.data.head.sha.slice(0, 7),
     branchName: pullRequest.data.head.ref,
@@ -32,6 +32,6 @@ export async function getPullRequestInfo() {
     repoDescription: pullRequest.data.head.repo?.description,
     creatorId: pullRequest.data.user?.login,
     creatorProfileUrl: pullRequest.data.user?.html_url,
-    creatorAvatarUrl: pullRequest.data.user?.avatar_url,
+    creatorAvatarUrl: pullRequest.data.user?.avatar_url
   }
 }

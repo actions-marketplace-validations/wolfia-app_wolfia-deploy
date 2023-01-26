@@ -1,6 +1,6 @@
 import * as core from '@actions/core'
 import * as octokit from './octokit'
-import { generateMagicLink } from './wolfia'
+import {generateMagicLink} from './wolfia'
 import * as github from '@actions/github'
 
 const context = github.context
@@ -10,7 +10,9 @@ async function runWolfiaAction(): Promise<void> {
     const shouldCommentOnPR = core.getBooleanInput('comment-on-pr')
 
     if (shouldCommentOnPR && !context.payload.pull_request) {
-      core.setFailed("Set comment-on-pr to false, if you want to enable wolfia github action for other workflows other than pull_request")
+      core.setFailed(
+        'Set comment-on-pr to false, if you want to enable wolfia github action for other workflows other than pull_request'
+      )
       return
     }
 
@@ -18,7 +20,11 @@ async function runWolfiaAction(): Promise<void> {
     const binaryPath = core.getInput('app-path')
 
     const pullRequestInfo = await octokit.getPullRequestInfo()
-    const magicLink = await generateMagicLink(linkDescription, binaryPath, JSON.stringify(pullRequestInfo))
+    const magicLink = await generateMagicLink(
+      linkDescription,
+      binaryPath,
+      JSON.stringify(pullRequestInfo)
+    )
 
     core.info(`Wolfia magic link: ${magicLink.data.link}`)
 

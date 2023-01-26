@@ -7,7 +7,7 @@ import path from 'path'
 export async function generateMagicLink(
   linkDescription: string,
   binaryPath: string,
-  additionalInfo: string,
+  additionalInfo: string
 ): Promise<AxiosResponse<MagicLink>> {
   const apiKeyId = core.getInput('wolfia-api-key-id')
   const apiKeySecret = core.getInput('wolfia-api-key-secret')
