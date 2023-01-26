@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: Compile and build github action
         run: |
-          npm ci --ignore-scripts --legacy-peer-deps
+          npm ci
           npm run all
       - name: Generate Wolfia github action
         uses: ./
