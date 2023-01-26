@@ -16,6 +16,11 @@ export async function uploadAppToWolfia(): Promise<AxiosResponse<string>> {
   if (!fs.existsSync(binaryPath)) {
     throw new Error(`App not found at ${binaryPath}`)
   }
+  if (!binaryPath.endsWith('.apk') && !binaryPath.endsWith('.aab')) {
+    throw new Error(
+      `App must be an apk or aab file. ipa files are not supported at this time. Path: ${binaryPath}`
+    )
+  }
   const formData = new FormData()
   formData.append(
     'binary',
