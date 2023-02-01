@@ -1,8 +1,8 @@
 {
-  "name": "wolfia-github-action",
-  "version": "1.1.0",
+  "name": "wolfia-deploy",
+  "version": "0.0.1",
   "private": true,
-  "description": "Generate wolfia magic link",
+  "description": "Upload your app for automating the distribution of your app to App store and Google play store",
   "main": "lib/main.js",
   "scripts": {
     "build": "tsc",
