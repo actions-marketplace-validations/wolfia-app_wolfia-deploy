@@ -2,7 +2,7 @@
 
 This action allows you to upload a binary to [Wolfia](https://wolfia.com) for automating the distribution of your app.
 
-Refer [here](https://github.com/actions/wolfia-github-action/tree/releases/) for the previous version
+Refer [here](https://github.com/actions/wolfia-deploy/tree/releases/) for the previous version
 
 ## Usage
 
@@ -22,7 +22,7 @@ Here's an [example configuration](.github/workflows/build.yml).
 
 ```yaml
 steps:
-- uses: wolfia-app/wolfia-github-action@v0.0.1
+- uses: wolfia-app/wolfia-deploy@v0.0.1
   with:
     github-token: ${{ secrets.GITHUB_TOKEN }}
     wolfia-api-key-id: ${{ vars.WOLFIA_API_KEY_ID }}
