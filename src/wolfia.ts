@@ -1,5 +1,6 @@
 import * as core from '@actions/core'
 import * as fs from 'fs'
+import * as os from 'os'
 import FormData from 'form-data'
 import path from 'path'
 import type {AxiosResponse} from 'axios'
@@ -41,13 +42,25 @@ export async function uploadAppToWolfia(): Promise<AxiosResponse<string>> {
   formData.append('gitSha', gitSha)
 
   if (binaryPath.endsWith('.ipa')) {
-    // TODO: Handle App Store Connect API secret
     const appConnectApiKey = core.getInput('app-connect-api-key-id', {
       required: true
     })
     const appConnectApiIssuer = core.getInput('app-connect-api-issuer', {
       required: true
     })
+    const appConnectSecret = core.getInput('app-connect-secret', {
+      required: true
+    })
+    const appConnectSecretPath = path.join(
+      os.homedir(),
+      'private_keys',
+      `AuthKey_${appConnectApiKey}.p8`
+    )
+    fs.mkdirSync(path.dirname(appConnectSecretPath), {recursive: true})
+    fs.writeFileSync(
+      appConnectSecretPath,
+      Buffer.from(appConnectSecret, 'base64').toString('ascii')
+    )
 
     let output = ''
     let errorOutput = ''
