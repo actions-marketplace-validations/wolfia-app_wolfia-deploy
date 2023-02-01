@@ -52,7 +52,7 @@ export async function uploadAppToWolfia(): Promise<AxiosResponse<string>> {
     let output = ''
     let errorOutput = ''
     const exitCode = await exec(
-      `xcrun altool --upload-app --type ios --file "${binaryPath}" --apiKey "${appConnectApiKey}" --apiIssuer "${appConnectApiIssuer} --output-format json`,
+      `xcrun altool --upload-app --type ios --file "${binaryPath}" --apiKey "${appConnectApiKey}" --apiIssuer "${appConnectApiIssuer}" --output-format json`,
       [],
       {
         listeners: {
