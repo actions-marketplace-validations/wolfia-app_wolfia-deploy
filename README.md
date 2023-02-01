@@ -9,7 +9,7 @@ Refer [here](https://github.com/actions/wolfia-deploy/tree/releases/) for the pr
 See [action.yml](action.yml).
 
 | Key                       | Value                                                                                                                                                                               | Suggested Type | Required | Default |
-| ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- | -------- | ------- |
+|---------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------|----------|---------|
 | github-token              | Use GitHub's automatically created [github token](https://docs.github.com/en/actions/security-guides/automatic-token-authentication#example-1-passing-the-github_token-as-an-input) | secret env     | true     | N/A     |
 | wolfia-api-key-id         | API Key ID for accessing the [Wolfia API](https://wolfia.com/docs/#generate-an-api-key)                                                                                             | vars           | true     | N/A     |
 | wolfia-api-key-secret     | API Key Secret for accessing the [Wolfia API](https://wolfia.com/docs/#generate-an-api-key)                                                                                         | secret env     | true     | N/A     |
@@ -26,20 +26,19 @@ Here's an [example configuration](.github/workflows/test.yml).
 ```yaml
 steps:
   - uses: wolfia-app/wolfia-deploy@v0.0.1
-  - uses: wolfia-app/wolfia-github-action@v0.0.1
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        wolfia-api-key-id: ${{ vars.WOLFIA_API_KEY_ID }}
-        wolfia-api-key-secret: ${{ secrets.WOLFIA_API_KEY_SECRET }}
-        track-id: ${{ vars.TRACK_ID } }}
-        app-path: app/build/outputs/signed-app.apk
+    with:
+      github-token: ${{ secrets.GITHUB_TOKEN }}
+      wolfia-api-key-id: ${{ vars.WOLFIA_API_KEY_ID }}
+      wolfia-api-key-secret: ${{ secrets.WOLFIA_API_KEY_SECRET }}
+      track-id: ${{ vars.TRACK_ID } }}
+      app-path: app/build/outputs/signed-app.apk
 ```
 
 ### Upload an iOS app binary to Wolfia
 
 ```yaml
 steps:
-  - uses: wolfia-app/wolfia-github-action@v0.0.1
+  - uses: wolfia-app/wolfia-deploy@v0.0.1
     with:
       github-token: ${{ secrets.GITHUB_TOKEN }}
       wolfia-api-key-id: ${{ vars.WOLFIA_API_KEY_ID }}
