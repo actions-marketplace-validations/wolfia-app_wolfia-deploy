@@ -27,7 +27,7 @@ inputs:
     description: 'App Connect API Issuer'
     required: false # true for iOS
   app-connect-secret-base64:
-    description: 'App Connect API private key file contents (base64 encoded)''
+    description: 'App Connect API private key file contents (base64 encoded)'
     required: false # true for iOS
 runs:
   using: 'node16'
