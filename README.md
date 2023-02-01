@@ -43,7 +43,7 @@ steps:
       github-token: ${{ secrets.GITHUB_TOKEN }}
       wolfia-api-key-id: ${{ vars.WOLFIA_API_KEY_ID }}
       wolfia-api-key-secret: ${{ secrets.WOLFIA_API_KEY_SECRET }}
-      track-id: ${{ vars.TRACK_ID } }}
+      track-id: ${{ vars.TRACK_ID }}
       app-path: app/build/outputs/signed-app.ipa
       app-connect-api-key-id: ${{ vars.APP_CONNECT_API_KEY_ID }}
       app-connect-api-issuer: ${{ vars.APP_CONNECT_API_ISSUER }}
@@ -53,7 +53,7 @@ steps:
 **Note**: to base64 encode the private key file and copy to your clipboard, run the following command:
 
 ```bash
-base64 -i ~/AuthKey_XXXXXXXXXX.p8 | pbcopy
+base64 -i ./AuthKey_XXXXXXXXXX.p8 | pbcopy
 ```
 
 ## License
