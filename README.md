@@ -1,4 +1,4 @@
-# Wolfia-Deploy v1
+# Wolfia-Deploy v0.0.1
 
 This action allows you to upload a binary to [Wolfia](https://wolfia.com) for automating the distribution of your app.
 
