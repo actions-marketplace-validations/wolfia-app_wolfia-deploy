@@ -1,6 +1,6 @@
 {
   "name": "wolfia-deploy",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "description": "Upload your app for automating the distribution of your app to App store and Google play store",
   "main": "lib/main.js",
