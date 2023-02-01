@@ -6,10 +6,12 @@ import path from 'path'
 import type {AxiosResponse} from 'axios'
 import axios from 'axios'
 import * as github from '@actions/github'
-import {exec} from '@actions/exec'
+import {getExecOutput} from '@actions/exec'
 
 const parseBuildId = (output: string): string | undefined =>
   output.match(/Delivery UUID: ([a-z0-9-]+)/)?.[1]
+
+const isMacOS = (): boolean => os.platform() === 'darwin'
 
 export async function uploadAppToWolfia(): Promise<AxiosResponse<string>> {
   const apiKeyId = core.getInput('wolfia-api-key-id', {required: true})
@@ -42,13 +44,18 @@ export async function uploadAppToWolfia(): Promise<AxiosResponse<string>> {
   formData.append('gitSha', gitSha)
 
   if (binaryPath.endsWith('.ipa')) {
+    if (!isMacOS())
+      throw new Error(
+        'Uploading iOS apps is only supported on macOS runners. See: https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources'
+      )
+
     const appConnectApiKey = core.getInput('app-connect-api-key-id', {
       required: true
     })
     const appConnectApiIssuer = core.getInput('app-connect-api-issuer', {
       required: true
     })
-    const appConnectSecret = core.getInput('app-connect-secret', {
+    const appConnectSecret = core.getInput('app-connect-secret-base64', {
       required: true
     })
     const appConnectSecretPath = path.join(
@@ -62,21 +69,12 @@ export async function uploadAppToWolfia(): Promise<AxiosResponse<string>> {
       Buffer.from(appConnectSecret, 'base64').toString('ascii')
     )
 
-    let output = ''
-    let errorOutput = ''
-    const exitCode = await exec(
-      `xcrun altool --upload-app --type ios --file "${binaryPath}" --apiKey "${appConnectApiKey}" --apiIssuer "${appConnectApiIssuer}" --output-format json`,
-      [],
-      {
-        listeners: {
-          stdout: (data: Buffer) => {
-            output += data.toString()
-          },
-          stderr: (data: Buffer) => {
-            errorOutput += data.toString()
-          }
-        }
-      }
+    const {
+      exitCode,
+      stderr: output,
+      stdout: errorOutput
+    } = await getExecOutput(
+      `xcrun altool --upload-app --type ios --file "${binaryPath}" --apiKey "${appConnectApiKey}" --apiIssuer "${appConnectApiIssuer}" --output-format json`
     )
 
     if (exitCode !== 0) {
@@ -91,7 +89,6 @@ export async function uploadAppToWolfia(): Promise<AxiosResponse<string>> {
     }
     formData.append('buildId', buildId)
 
-    // TODO: Upload build ID to Wolfia
     return axios.post('https://api.wolfia.com/upload/ios', formData, {
       headers: {
         'Content-Type': `multipart/form-data; boundary=${formData.getBoundary()}`,
