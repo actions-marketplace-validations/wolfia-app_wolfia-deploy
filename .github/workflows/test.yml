@@ -24,3 +24,9 @@ jobs:
           wolfia-api-key-secret: ${{ secrets.WOLFIA_API_KEY_SECRET }}
           track-id: ${{ vars.TRACK_ID }}
           app-path: data/hacker.apk
+
+          ### For iOS ###
+          # app-connect-api-key-id: ${{ vars.APP_CONNECT_API_KEY_ID }}
+          # app-connect-api-issuer: ${{ vars.APP_CONNECT_API_ISSUER }}
+          # app-connect-secret-base64: ${{ secrets.APP_CONNECT_SECRET_BASE64 }}
+          # app-path: data/app.ipa
